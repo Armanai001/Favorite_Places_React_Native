@@ -1,20 +1,57 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {StatusBar} from 'expo-status-bar';
+import {StyleSheet} from 'react-native';
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {NavigationContainer} from "@react-navigation/native";
 
+import AllPlaces from "./src/screen/AllPlaces";
+import AddPlace from "./src/screen/AddPlace";
+import IconButton from "./src/components/Ui/IconButton";
+import {colors} from "./src/constants/colors";
+
+const Stack = createNativeStackNavigator();
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello, Arman</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    return (
+        <>
+            <StatusBar style='dark'/>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{
+                    headerStyle: {backgroundColor: colors.primary500},
+                    headerTintColor: colors.gray700,
+                    contentStyle: {backgroundColor: colors.gray700}
+                }}>
+                    <Stack.Screen name="AllPlaces"
+                                  component={AllPlaces}
+                                  options={({navigation}) => ({
+                                      headerRight: ({tintColor}) => (
+                                          <IconButton name="add"
+                                                      color={tintColor || 'white'}
+                                                      size={24}
+                                                      onPress={() => navigation.navigate('AddPlace')}
+                                          />
+                                      ),
+                                      title: "Favourite Places"
+                                  })}
+                    />
+
+                    <Stack.Screen name="AddPlace"
+                                  component={AddPlace}
+                                  options={{
+                                      title: "Add New Place"
+                                  }}
+                    />
+                </Stack.Navigator>
+
+            </NavigationContainer>
+
+        </>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
