@@ -1,6 +1,7 @@
 import {ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
 import {colors} from "../../constants/colors";
 import ImagePicker from "../NativeFunctions/ImagePicker";
+import LocationPicker from "../NativeFunctions/LocationPicker";
 
 export default function PlaceForm() {
     return (
@@ -9,9 +10,15 @@ export default function PlaceForm() {
                 <Text style={styles.title}>
                     Title
                 </Text>
+
                 <TextInput style={styles.input}/>
+
                 <View style={styles.imagePicker}>
                     <ImagePicker/>
+                </View>
+
+                <View style={styles.locationPicker}>
+                    <LocationPicker/>
                 </View>
             </View>
         </ScrollView>
@@ -37,5 +44,7 @@ const styles = StyleSheet.create({
     },
     imagePicker: {
         marginVertical: 10
+    },
+    locationPicker: {
     }
 })

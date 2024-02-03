@@ -25,11 +25,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         gap: 10,
-        borderRadius: 2,
+        borderRadius: 5,
         padding: 3,
         borderWidth: 2,
         borderStyle: 'solid',
-        borderColor: colors.primary500
+        borderColor: colors.primary500,
+        flex: 1,
+        height: 40
     },
     pressedButton: {
         opacity: 0.7,
