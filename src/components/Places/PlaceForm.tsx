@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 10,
         margin: 10,
+        flex: 1
     },
     title: {
         color: colors.primary50,
@@ -31,7 +32,8 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: colors.primary50,
         borderRadius: 3,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        minHeight: 30
     },
     imagePicker: {
         marginVertical: 10
