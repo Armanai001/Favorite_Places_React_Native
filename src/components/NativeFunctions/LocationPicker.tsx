@@ -3,11 +3,15 @@ import OutlineButton from "../Ui/OutlineButton";
 import {getCurrentPositionAsync, useForegroundPermissions} from "expo-location";
 import {PermissionStatus} from "expo-image-picker";
 import {useState} from "react";
+import {useNavigation} from "@react-navigation/native";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+
 
 export default function LocationPicker() {
 
     const [locationPermissionInformation, requestPermission] = useForegroundPermissions()
     const [currentLocation, setCurrentLocation] = useState<any>('')
+    const navigation = useNavigation<NativeStackNavigationProp<{ Map: undefined }>>()
 
     async function verifyPermissions() {
         if (!locationPermissionInformation) {
@@ -30,8 +34,9 @@ export default function LocationPicker() {
         setCurrentLocation({lat: location.coords.latitude, lng: location.coords.longitude})
     }
 
-    function mapHandler() {
+    function mapHandler() {``
 
+        navigation.navigate('Map')
     }
 
     function getMapPreview(lat: number, lng: number) {
