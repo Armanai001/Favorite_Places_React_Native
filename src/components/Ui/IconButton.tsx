@@ -5,7 +5,7 @@ export default function IconButton({name, color, size, onPress}: {
     name: any,
     color: string,
     size: number,
-    onPress: () => {}
+    onPress: () => void
 }) {
     return (
         <Pressable onPress={onPress}

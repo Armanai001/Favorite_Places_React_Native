@@ -1,22 +1,41 @@
+import {useCallback, useLayoutEffect, useState} from "react";
+import {Alert, StyleSheet} from "react-native";
 import MapView, {MapPressEvent, Marker} from "react-native-maps";
-import {StyleSheet} from "react-native";
-import {useState} from "react";
 
-export default function MapScreen() {
+import IconButton from "../components/Ui/IconButton";
+
+export default function MapScreen({navigation}: { navigation: any }) {
     const initialRegion = {
-        latitude: 29.1501,
+        latitude: 30.1501,
         longitude: 75.7176,
         latitudeDelta: 0.8499,
         longitudeDelta: 0.2824
     }
 
-    const [selectedLocation, setSelectedLocation] = useState<{ lat: number, lng: number }>({lat: 0, lng: 0})
+    const [selectedLocation, setSelectedLocation] = useState<mapObject>({
+        latitude: 0,
+        longitude: 0
+    })
 
     function locationHandler(event: MapPressEvent) {
-        const lat = event.nativeEvent.coordinate.latitude;
-        const lng = event.nativeEvent.coordinate.longitude
-        setSelectedLocation({lat, lng})
+        setSelectedLocation({...event.nativeEvent.coordinate})
     }
+
+    const saveLocation = useCallback(() => {
+        if (selectedLocation.longitude === 0 && selectedLocation.latitude === 0) {
+            Alert.alert('Location Not selected', 'Please select a location to add.')
+        } else {
+            navigation.navigate('AddPlace', selectedLocation)
+        }
+    }, [navigation, selectedLocation])
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: ({tintColor}: { tintColor: string }) => (
+                <IconButton name="save" color={tintColor} size={24} onPress={saveLocation}/>)
+        })
+    }, [navigation, saveLocation])
+
 
     return <>
         <MapView initialRegion={initialRegion}
@@ -24,14 +43,11 @@ export default function MapScreen() {
                  onPress={locationHandler}
         >
             {
-                selectedLocation.lat !== 0 &&
-                selectedLocation.lng !== 0 &&
+                selectedLocation.latitude !== 0 &&
+                selectedLocation.longitude !== 0 &&
                 <Marker
                     title="Picked location"
-                    coordinate={{
-                    latitude: selectedLocation.lat,
-                    longitude: selectedLocation.lng
-                }}/>
+                    coordinate={{...selectedLocation}}/>
             }
         </MapView>
     </>

@@ -1,17 +1,26 @@
-import {Alert, Image, StyleSheet, Text, View} from "react-native";
-import OutlineButton from "../Ui/OutlineButton";
+import {useEffect, useState} from "react";
+import {Alert, StyleSheet, Text, View} from "react-native";
 import {getCurrentPositionAsync, useForegroundPermissions} from "expo-location";
 import {PermissionStatus} from "expo-image-picker";
-import {useState} from "react";
-import {useNavigation} from "@react-navigation/native";
+import MapView, {Marker} from "react-native-maps";
+
+import {useIsFocused, useNavigation, useRoute} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+
+import OutlineButton from "../Ui/OutlineButton";
 
 
 export default function LocationPicker() {
 
     const [locationPermissionInformation, requestPermission] = useForegroundPermissions()
-    const [currentLocation, setCurrentLocation] = useState<any>('')
+    const [location, setLocation] = useState<mapObject>({
+        latitude: 0,
+        longitude: 0
+    })
+
     const navigation = useNavigation<NativeStackNavigationProp<{ Map: undefined }>>()
+    const isFocused = useIsFocused()
+    const route = useRoute()
 
     async function verifyPermissions() {
         if (!locationPermissionInformation) {
@@ -31,33 +40,38 @@ export default function LocationPicker() {
 
         if (!hasPermission) return;
         const location = await getCurrentPositionAsync();
-        setCurrentLocation({lat: location.coords.latitude, lng: location.coords.longitude})
+        setLocation({latitude: location.coords.latitude, longitude: location.coords.longitude})
     }
 
-    function mapHandler() {``
-
+    function mapHandler() {
         navigation.navigate('Map')
     }
 
-    function getMapPreview(lat: number, lng: number) {
-        const googleMapApiKey = ''
-        return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:S%7C${lat},${lng}&key=${googleMapApiKey}`
-    }
+
+    useEffect(() => {
+        if (isFocused && route.params) {
+            setLocation({latitude: 0, longitude: 0, ...route.params})
+        }
+
+    }, [isFocused, route])
 
 
     return (
         <View style={styles.container}>
             {
-                currentLocation !== '' && <Image style={styles.mapPreview}
-                                                 source={{uri: getMapPreview(currentLocation.lat, currentLocation.lng)}}/>
-            }
-            {
-                currentLocation && <Text>{currentLocation.lat} and {currentLocation.lng}</Text>
+                location.latitude !== 0 &&
+                location.longitude !== 0 &&
+                <MapView
+                    style={styles.mapPreview}
+                    scrollEnabled={false}
+                >
+                    <Marker coordinate={{...location}}/>
+                </MapView>
             }
 
             <View style={styles.buttonContainer}>
                 <OutlineButton icon="location" onPress={locationHandler}>
-                    User Location
+                    Current Location
                 </OutlineButton>
 
                 <Text style={styles.orText}>
@@ -65,10 +79,9 @@ export default function LocationPicker() {
                 </Text>
 
                 <OutlineButton icon="map" onPress={mapHandler}>
-                    Pick on Map
+                    Pick from Map
                 </OutlineButton>
             </View>
-
         </View>
     )
 }
