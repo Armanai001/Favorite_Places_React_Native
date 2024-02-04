@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {Alert, StyleSheet, Text, View} from "react-native";
 import {getCurrentPositionAsync, useForegroundPermissions} from "expo-location";
 import {PermissionStatus} from "expo-image-picker";
@@ -10,13 +10,12 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import OutlineButton from "../Ui/OutlineButton";
 
 
-export default function LocationPicker() {
+export default function LocationPicker({location, setLocation}: {
+    location: mapObject,
+    setLocation: (data: mapObject) => void
+}) {
 
     const [locationPermissionInformation, requestPermission] = useForegroundPermissions()
-    const [location, setLocation] = useState<mapObject>({
-        latitude: 0,
-        longitude: 0
-    })
 
     const navigation = useNavigation<NativeStackNavigationProp<{ Map: undefined }>>()
     const isFocused = useIsFocused()

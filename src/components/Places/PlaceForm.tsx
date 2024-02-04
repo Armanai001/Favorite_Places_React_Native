@@ -1,9 +1,26 @@
+import {useState} from "react";
 import {ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
+
 import {colors} from "../../constants/colors";
 import ImagePicker from "../NativeFunctions/ImagePicker";
 import LocationPicker from "../NativeFunctions/LocationPicker";
+import OutlineButton from "../Ui/OutlineButton";
 
 export default function PlaceForm() {
+
+    const [title, setTile] = useState('')
+
+    const [takenImage, setTakenImage] = useState('')
+
+    const [location, setLocation] = useState<mapObject>({
+        latitude: 0,
+        longitude: 0
+    })
+
+    function submitData() {
+        const data = {title, takenImage, location}
+    }
+
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -11,14 +28,25 @@ export default function PlaceForm() {
                     Title
                 </Text>
 
-                <TextInput style={styles.input}/>
+                <TextInput
+                    value={title}
+                    onChangeText={setTile}
+                    style={styles.input}
+                    placeholder="Enter Place Name"
+                />
 
                 <View style={styles.imagePicker}>
-                    <ImagePicker/>
+                    <ImagePicker takenImage={takenImage} setTakenImage={setTakenImage}/>
                 </View>
 
                 <View style={styles.locationPicker}>
-                    <LocationPicker/>
+                    <LocationPicker location={location} setLocation={setLocation}/>
+                </View>
+
+                <View style={styles.save}>
+                    <OutlineButton icon='save' onPress={submitData}>
+                        Save to your place
+                    </OutlineButton>
                 </View>
             </View>
         </ScrollView>
@@ -30,7 +58,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 10,
         margin: 10,
-        flex: 1
+        flex: 1,
     },
     title: {
         color: colors.primary50,
@@ -46,5 +74,10 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     locationPicker: {
+        paddingVertical: 5
+    },
+    save: {
+        marginTop: 20
     }
+
 })

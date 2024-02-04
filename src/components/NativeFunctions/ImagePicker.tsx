@@ -1,12 +1,14 @@
 import {Alert, Image, StyleSheet, View} from "react-native";
 import {launchCameraAsync, PermissionStatus, useCameraPermissions} from "expo-image-picker";
-import {useState} from "react";
+
 import OutlineButton from "../Ui/OutlineButton";
 
-export default function ImagePicker() {
+export default function ImagePicker({takenImage, setTakenImage}: {
+    takenImage: string,
+    setTakenImage: (data: string) => void
+}) {
 
     const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
-    const [takenImage, setTakenImage] = useState('')
 
     async function verifyPermissions() {
         if (!cameraPermissionInformation) {
@@ -42,7 +44,7 @@ export default function ImagePicker() {
             }
         </View>
         <OutlineButton icon='camera' onPress={addImage}>
-            {takenImage === "" ? "Add Image" : "Add another Image"}
+            {takenImage === "" ? "Add Image" : "Add Image again"}
         </OutlineButton>
     </View>
 }
