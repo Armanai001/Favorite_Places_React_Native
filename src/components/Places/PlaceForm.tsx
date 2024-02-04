@@ -5,6 +5,7 @@ import {colors} from "../../constants/colors";
 import ImagePicker from "../NativeFunctions/ImagePicker";
 import LocationPicker from "../NativeFunctions/LocationPicker";
 import OutlineButton from "../Ui/OutlineButton";
+import {coordinatesToAddress} from "../../Utility/MapUtil";
 
 export default function PlaceForm() {
 
@@ -17,8 +18,10 @@ export default function PlaceForm() {
         longitude: 0
     })
 
-    function submitData() {
-        const data = {title, takenImage, location}
+    async function submitData() {
+        const address = await coordinatesToAddress(location)
+        const data = {title, takenImage, location, address}
+        console.log(data)
     }
 
     return (
