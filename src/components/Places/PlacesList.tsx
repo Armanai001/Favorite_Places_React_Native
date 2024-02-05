@@ -1,7 +1,8 @@
 import {FlatList, StyleSheet, Text, View} from "react-native";
 import PlaceItem from "./PlaceItem";
+import {Place} from "../../models/place";
 
-export default function PlacesList({places}: { places: any[] }) {
+export default function PlacesList({places}: { places: Place[] }) {
 
     function handleClick() {
 
@@ -11,9 +12,9 @@ export default function PlacesList({places}: { places: any[] }) {
         {
             places.length === 0 ? <Text style={styles.notFount}>No Places found</Text> :
                 <FlatList data={places}
-                          keyExtractor={({item}) => item}
+                          keyExtractor={({id}) => id}
                           renderItem={({item}) => (
-                              <PlaceItem place={item.item} onPress={handleClick}/>
+                              <PlaceItem place={item} onPress={handleClick}/>
                           )}/>
         }
     </View>

@@ -63,6 +63,11 @@ export default function LocationPicker({location, setLocation}: {
                 <MapView
                     style={styles.mapPreview}
                     scrollEnabled={false}
+                    initialRegion={{
+                        ...location,
+                        latitudeDelta: 0.8499,
+                        longitudeDelta: 0.2824
+                    }}
                 >
                     <Marker coordinate={{...location}}/>
                 </MapView>
