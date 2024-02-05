@@ -13,8 +13,8 @@ export default function MapScreen({navigation}: { navigation: any }) {
     }
 
     const [selectedLocation, setSelectedLocation] = useState<mapObject>({
-        latitude: 0,
-        longitude: 0
+        latitude: null,
+        longitude: null
     })
 
     function locationHandler(event: MapPressEvent) {
@@ -22,7 +22,7 @@ export default function MapScreen({navigation}: { navigation: any }) {
     }
 
     const saveLocation = useCallback(() => {
-        if (selectedLocation.longitude === 0 && selectedLocation.latitude === 0) {
+        if (selectedLocation.longitude === null && selectedLocation.latitude === null) {
             Alert.alert('Location Not selected', 'Please select a location to add.')
         } else {
             navigation.navigate('AddPlace', selectedLocation)
@@ -43,11 +43,14 @@ export default function MapScreen({navigation}: { navigation: any }) {
                  onPress={locationHandler}
         >
             {
-                selectedLocation.latitude !== 0 &&
-                selectedLocation.longitude !== 0 &&
+                selectedLocation.latitude !== null &&
+                selectedLocation.longitude !== null &&
                 <Marker
                     title="Picked location"
-                    coordinate={{...selectedLocation}}/>
+                    coordinate={{
+                        latitude: selectedLocation.latitude as number,
+                        longitude: selectedLocation.longitude as number
+                    }}/>
             }
         </MapView>
     </>

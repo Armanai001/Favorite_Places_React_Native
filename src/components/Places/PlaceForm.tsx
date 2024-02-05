@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
+import {Alert, ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
 
 import {colors} from "../../constants/colors";
 import ImagePicker from "../NativeFunctions/ImagePicker";
@@ -15,14 +15,22 @@ export default function PlaceForm({submitPlace}: { submitPlace: (data: Place) =>
     const [takenImage, setTakenImage] = useState('')
 
     const [location, setLocation] = useState<mapObject>({
-        latitude: 0,
-        longitude: 0
+        latitude: null,
+        longitude: null
     })
 
     async function submitData() {
-        const address = await coordinatesToAddress(location)
-        const data = new Place(title, takenImage, address, location)
-        submitPlace(data)
+        if (title !== "" || takenImage !== "" || (location.longitude && location.latitude)) {
+            let address = ""
+            if (location.longitude && location.latitude) {
+                address = await coordinatesToAddress(location)
+            }
+            const data = new Place(Math.random().toString(), title, takenImage, address, location)
+            submitPlace(data)
+
+        } else {
+            Alert.alert('Empty Data', 'Please complete at lease one from above.')
+        }
     }
 
     return (

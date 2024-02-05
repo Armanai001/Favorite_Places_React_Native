@@ -39,7 +39,7 @@ export default function LocationPicker({location, setLocation}: {
 
         if (!hasPermission) return;
         const location = await getCurrentPositionAsync();
-        setLocation({latitude: location.coords.latitude, longitude: location.coords.longitude})
+        setLocation({...location.coords})
     }
 
     function mapHandler() {
@@ -49,7 +49,7 @@ export default function LocationPicker({location, setLocation}: {
 
     useEffect(() => {
         if (isFocused && route.params) {
-            setLocation({latitude: 0, longitude: 0, ...route.params})
+            setLocation({latitude: null, longitude: null, ...route.params})
         }
 
     }, [isFocused, route])
@@ -58,18 +58,22 @@ export default function LocationPicker({location, setLocation}: {
     return (
         <View style={styles.container}>
             {
-                location.latitude !== 0 &&
-                location.longitude !== 0 &&
+                location.latitude !== null &&
+                location.longitude !== null &&
                 <MapView
                     style={styles.mapPreview}
                     scrollEnabled={false}
                     initialRegion={{
-                        ...location,
+                        latitude: location.latitude as number,
+                        longitude: location.longitude as number,
                         latitudeDelta: 0.8499,
                         longitudeDelta: 0.2824
                     }}
                 >
-                    <Marker coordinate={{...location}}/>
+                    <Marker coordinate={{
+                        latitude: location.latitude as number,
+                        longitude: location.longitude as number
+                    }}/>
                 </MapView>
             }
 
