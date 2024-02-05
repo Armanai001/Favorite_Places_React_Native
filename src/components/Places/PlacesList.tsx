@@ -8,7 +8,7 @@ export default function PlacesList({places}: { places: Place[] }) {
 
     }
 
-    return <View style={styles.container}>
+    return <View >
         {
             places.length === 0 ? <Text style={styles.notFount}>No Places found</Text> :
                 <FlatList data={places}
@@ -21,9 +21,6 @@ export default function PlacesList({places}: { places: Place[] }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: "100%"
-    },
     notFount: {
         textAlign: 'center',
         color: 'white',
