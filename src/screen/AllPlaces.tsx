@@ -10,12 +10,6 @@ export default function AllPlaces({route}: { route: any }) {
     const [placesList, setPlacesList] = useState<Place[]>([])
     const isFocused = useIsFocused();
 
-    useEffect(() => {
-
-        if (isFocused && route.params) {
-            setPlacesList(prevState => [...prevState, {...route.params}])
-        }
-    }, [isFocused])
 
     useEffect(() => {
         async function loadPlaces() {
@@ -25,7 +19,7 @@ export default function AllPlaces({route}: { route: any }) {
 
         loadPlaces();
 
-    }, [])
+    }, [isFocused])
 
 
     return <>

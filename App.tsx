@@ -10,6 +10,7 @@ import IconButton from "./src/components/Ui/IconButton";
 import {colors} from "./src/constants/colors";
 import MapScreen from "./src/screen/MapScreen";
 import {init} from "./src/store/database";
+import PlaceDetails from "./src/screen/PlaceDetails";
 
 const Stack = createNativeStackNavigator();
 SplashScreen.preventAutoHideAsync();
@@ -57,6 +58,10 @@ export default function App() {
 
                     <Stack.Screen name="Map"
                                   component={MapScreen}
+                    />
+
+                    <Stack.Screen name="Detail"
+                                  component={PlaceDetails}
                     />
 
 

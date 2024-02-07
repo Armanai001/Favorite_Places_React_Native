@@ -1,11 +1,14 @@
 import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {Place} from "../../models/place";
+import {colors} from "../../constants/colors";
 
 export default function PlaceItem({place, onPress}: { place: Place, onPress: () => void }) {
-    return <Pressable onPress={onPress} style={styles.container}>
+    return <Pressable onPress={onPress}
+                      android_ripple={{color:"#9daee7"}}
+                      style={({pressed}) => [styles.container, pressed && styles.pressed]}
+    >
         <View style={styles.imageContainer}>
             {
-
                 place.imageUri === "" ?
                     <Text style={[styles.imageText, styles.image]}>No Image</Text> :
                     <Image source={{uri: place.imageUri}} style={styles.image}/>
@@ -27,7 +30,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         margin: 5,
         backgroundColor: '#5d87e3',
-        height: 90
+        height: 90,
+    },
+    pressed: {
+        opacity: 0.8,
     },
     imageContainer: {
         width: 90,
@@ -57,6 +63,6 @@ const styles = StyleSheet.create({
     },
     address: {
         fontStyle: 'italic',
-        width: '70%',
+        width: '65%',
     }
 })
