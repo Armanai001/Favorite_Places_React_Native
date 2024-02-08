@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {Place} from "../models/place";
-import {fetchDetails} from "../store/database";
+import {fetchDetails, remove} from "../store/database";
 import {Image, StyleSheet, Text, View} from "react-native";
 import {colors} from "../constants/colors";
 import OutlineButton from "../components/Ui/OutlineButton";
@@ -10,7 +10,7 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 export default function PlaceDetails({route}: { route: any }) {
 
     const [place, setPlace] = useState<Place>()
-    const navigation = useNavigation<NativeStackNavigationProp<{ 'Map': any }>>();
+    const navigation = useNavigation<NativeStackNavigationProp<{ 'Map': any, 'AllPlaces': any }>>();
 
     useEffect(() => {
         const id = route.params.id
@@ -34,8 +34,10 @@ export default function PlaceDetails({route}: { route: any }) {
 
     }
 
-    function deleteHandler() {
-
+    function deleteHandler(id: string) {
+        remove(id).then(() => {
+            navigation.navigate('AllPlaces')
+        })
     }
 
 
@@ -65,7 +67,7 @@ export default function PlaceDetails({route}: { route: any }) {
                 <View>
                     <View style={styles.editActions}>
 
-                        <OutlineButton icon='trash' onPress={deleteHandler}>
+                        <OutlineButton icon='trash' onPress={() => deleteHandler(place.id)}>
                             Delete Place
                         </OutlineButton>
 
