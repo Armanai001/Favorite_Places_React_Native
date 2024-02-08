@@ -10,7 +10,10 @@ export default function FetchPlaces(database: SQLiteDatabase): Promise<Place[]> 
             `, [],
                 (_, result) => {
                     const data = result.rows._array.map(item => {
-                        return new Place(item.id, item.title, item.imageUri, item.address, item.location)
+                        return new Place(item.id, item.title, item.imageUri, item.address, {
+                            latitude: item.latitude || null,
+                            longitude: item.longitude || null
+                        })
                     })
 
                     resolve(data)

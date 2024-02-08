@@ -4,10 +4,13 @@ import {fetchDetails} from "../store/database";
 import {Image, StyleSheet, Text, View} from "react-native";
 import {colors} from "../constants/colors";
 import OutlineButton from "../components/Ui/OutlineButton";
+import {useNavigation} from "@react-navigation/native";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
 export default function PlaceDetails({route}: { route: any }) {
 
     const [place, setPlace] = useState<Place>()
+    const navigation = useNavigation<NativeStackNavigationProp<{ 'Map': any }>>();
 
     useEffect(() => {
         const id = route.params.id
@@ -22,7 +25,9 @@ export default function PlaceDetails({route}: { route: any }) {
     }, [route])
 
     function mapHandler() {
-
+        navigation.navigate('Map', {
+            ...place?.location
+        })
     }
 
     function editHandler() {
@@ -38,7 +43,7 @@ export default function PlaceDetails({route}: { route: any }) {
         {
             place && <View style={[styles.container]}>
                 <View style={styles.dataContainer}>
-                    <View >
+                    <View>
                         {
                             place.imageUri === "" ?
                                 <Text style={[
@@ -69,11 +74,13 @@ export default function PlaceDetails({route}: { route: any }) {
                         </OutlineButton>
 
                     </View>
-                    <View style={styles.mapButton}>
-                        <OutlineButton icon='map' onPress={mapHandler}>
-                            View on map
-                        </OutlineButton>
-                    </View>
+                    {
+                        place.address !== "" && <View style={styles.mapButton}>
+                            <OutlineButton icon='map' onPress={mapHandler}>
+                                View on map
+                            </OutlineButton>
+                        </View>
+                    }
                 </View>
             </View>
         }
@@ -86,7 +93,7 @@ const styles = StyleSheet.create({
         padding: 5,
         margin: '3%',
         gap: 10,
-        height: '100%'
+        height: '95%'
     },
     dataContainer: {
         flex: 1,
@@ -100,13 +107,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         verticalAlign: 'middle',
         padding: 10,
-        backgroundColor:'black'
+        backgroundColor: 'black'
     },
     image: {
         width: '100%',
         height: 200,
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
     },
     border: {
         borderTopLeftRadius: 10,
@@ -133,6 +140,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         gap: 5,
+        marginVertical: 10
     },
     mapButton: {
         height: 50,

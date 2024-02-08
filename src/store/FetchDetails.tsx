@@ -10,7 +10,10 @@ export default function FetchDetails(database: SQLiteDatabase, id: string): Prom
             `, [id],
                 (_, result) => {
                     const data = result.rows._array[0];
-                    resolve(new Place(data.id, data.title, data.imageUri, data.address, data.location))
+                    resolve(new Place(data.id, data.title, data.imageUri, data.address, {
+                        latitude: data.latitude || null,
+                        longitude: data.longitude || null
+                    }))
                 },
                 (_, error) => {
                     reject(error);
