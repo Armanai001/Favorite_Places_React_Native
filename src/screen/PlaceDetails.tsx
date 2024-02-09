@@ -10,7 +10,7 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 export default function PlaceDetails({route}: { route: any }) {
 
     const [place, setPlace] = useState<Place>()
-    const navigation = useNavigation<NativeStackNavigationProp<{ 'Map': any, 'AllPlaces': any }>>();
+    const navigation = useNavigation<NativeStackNavigationProp<{ 'Map': any, 'AllPlaces': any, 'Edit Place': any }>>();
 
     useEffect(() => {
         const id = route.params.id
@@ -26,12 +26,13 @@ export default function PlaceDetails({route}: { route: any }) {
 
     function mapHandler() {
         navigation.navigate('Map', {
-            ...place?.location
+            ...place?.location,
+            readOnly: true
         })
     }
 
     function editHandler() {
-
+        navigation.navigate('Edit Place', {...place})
     }
 
     function deleteHandler(id: string) {

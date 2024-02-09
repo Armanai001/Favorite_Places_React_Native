@@ -11,17 +11,18 @@ import {colors} from "./src/constants/colors";
 import MapScreen from "./src/screen/MapScreen";
 import {init} from "./src/store/database";
 import PlaceDetails from "./src/screen/PlaceDetails";
+import EditPlace from "./src/screen/EditPlace";
 
 const Stack = createNativeStackNavigator();
 SplashScreen.preventAutoHideAsync();
 export default function App() {
-    const [dbInitialized, setDbInitialized] = useState(false)
+    const [_, setDbInitialized] = useState(false)
 
     useEffect(() => {
         init.then(async () => {
             setDbInitialized(true)
             await SplashScreen.hideAsync();
-        }).catch((err) => {
+        }).catch((_) => {
 
         });
     }, [])
@@ -64,6 +65,9 @@ export default function App() {
                                   component={PlaceDetails}
                     />
 
+                    <Stack.Screen name="Edit Place"
+                                  component={EditPlace}
+                    />
 
                 </Stack.Navigator>
 

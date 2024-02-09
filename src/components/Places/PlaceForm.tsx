@@ -5,19 +5,22 @@ import {colors} from "../../constants/colors";
 import ImagePicker from "../NativeFunctions/ImagePicker";
 import LocationPicker from "../NativeFunctions/LocationPicker";
 import OutlineButton from "../Ui/OutlineButton";
-import {coordinatesToAddress} from "../../Utility/MapUtil";
 import {Place} from "../../models/place";
+import {coordinatesToAddress} from "../../Utility/MapUtil";
 
-export default function PlaceForm({submitPlace}: { submitPlace: (data: Place) => void }) {
+export default function PlaceForm({submitPlace, previousPlace}: {
+    submitPlace: (data: Place) => void,
+    previousPlace: Place
+}) {
 
-    const [title, setTile] = useState('')
+    const [title, setTile] = useState(previousPlace.title)
 
-    const [takenImage, setTakenImage] = useState('')
+    const [takenImage, setTakenImage] = useState(previousPlace.imageUri)
 
-    const [location, setLocation] = useState<mapObject>({
-        latitude: null,
-        longitude: null
-    })
+    const [location, setLocation] = useState(previousPlace.location)
+
+    const [id] = useState(previousPlace.id)
+
 
     async function submitData() {
         if (title !== "" || takenImage !== "" || (location.longitude && location.latitude)) {
@@ -25,7 +28,7 @@ export default function PlaceForm({submitPlace}: { submitPlace: (data: Place) =>
             if (location.longitude && location.latitude) {
                 address = await coordinatesToAddress(location)
             }
-            const data = new Place(Math.random().toString(), title, takenImage, address, location)
+            const data = new Place(id, title, takenImage, address, location)
             submitPlace(data)
 
         } else {
@@ -64,6 +67,17 @@ export default function PlaceForm({submitPlace}: { submitPlace: (data: Place) =>
         </ScrollView>
 
     )
+}
+
+
+PlaceForm.defaultProps = {
+    previousPlace: {
+        title: "",
+        imageUri: "",
+        location: {latitude: null, longitude: null},
+        address: "",
+        id: Math.random().toString()
+    }
 }
 
 const styles = StyleSheet.create({

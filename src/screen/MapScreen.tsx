@@ -6,10 +6,10 @@ import IconButton from "../components/Ui/IconButton";
 
 export default function MapScreen({navigation, route}: { navigation: any, route: any }) {
     const initialRegion = {
-        latitude: route.params.latitude || 30.1501,
-        longitude: route.params.longitude || 75.7176,
-        latitudeDelta: 0.8499,
-        longitudeDelta: 0.2824
+        latitude: route.params.readOnly ? route.params.latitude : 30.1501,
+        longitude: route.params.readOnly ? route.params.longitude : 75.7176,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1
     }
 
     const [selectedLocation, setSelectedLocation] = useState<mapObject>({
@@ -18,19 +18,23 @@ export default function MapScreen({navigation, route}: { navigation: any, route:
     })
 
     function locationHandler(event: MapPressEvent) {
-        !route.params && setSelectedLocation({...event.nativeEvent.coordinate})
+        !route.params.readOnly && setSelectedLocation({...event.nativeEvent.coordinate})
     }
 
+
+    // After taking location coordinates going back to previous screen
     const saveLocation = useCallback(() => {
         if (selectedLocation.longitude === null && selectedLocation.latitude === null) {
             Alert.alert('Location Not selected', 'Please select a location to add.')
         } else {
-            navigation.navigate('AddPlace', selectedLocation)
+            navigation.navigate(route.params.navigateScreen, selectedLocation)
         }
     }, [navigation, selectedLocation])
 
+
+    // Adding location coordinates saving buttons
     useLayoutEffect(() => {
-        !route.params && navigation.setOptions({
+        !route.params.readOnly && navigation.setOptions({
             headerRight: ({tintColor}: { tintColor: string }) => (
                 <IconButton name="save" color={tintColor} size={24} onPress={saveLocation}/>)
         })
@@ -53,8 +57,7 @@ export default function MapScreen({navigation, route}: { navigation: any, route:
                     }}/>
             }
             {
-                route.params.latitude &&
-                route.params.longitude &&
+                route.params.readOnly &&
                 <Marker
                     title={"Saved Location"}
                     coordinate={{

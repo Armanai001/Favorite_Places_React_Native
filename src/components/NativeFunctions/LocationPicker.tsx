@@ -17,9 +17,9 @@ export default function LocationPicker({location, setLocation}: {
 
     const [locationPermissionInformation, requestPermission] = useForegroundPermissions()
 
-    const navigation = useNavigation<NativeStackNavigationProp<{ Map: undefined }>>()
+    const navigation = useNavigation<NativeStackNavigationProp<{ Map: any }>>()
     const isFocused = useIsFocused()
-    const route = useRoute()
+    const route = useRoute<any>()
 
     async function verifyPermissions() {
         if (!locationPermissionInformation) {
@@ -39,19 +39,27 @@ export default function LocationPicker({location, setLocation}: {
 
         if (!hasPermission) return;
         const location = await getCurrentPositionAsync();
-        setLocation({...location.coords})
+        setLocation(location.coords)
     }
 
     function mapHandler() {
-        navigation.navigate('Map')
+        navigation.navigate('Map', {
+            readOnly: false,
+            navigateScreen: route.name
+        })
     }
 
 
     useEffect(() => {
         if (isFocused && route.params) {
-            setLocation({latitude: null, longitude: null, ...route.params})
-        }
+            if (route.params.location) {
+                setLocation(route.params.location as mapObject);
+                return;
+            }
 
+            setLocation(route.params as mapObject)
+
+        }
     }, [isFocused, route])
 
 
