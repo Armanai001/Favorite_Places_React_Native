@@ -68,7 +68,10 @@ export default function PlaceDetails({route}: { route: any }) {
                 <View>
                     <View style={styles.editActions}>
 
-                        <OutlineButton icon='trash' onPress={() => deleteHandler(place.id)}>
+                        <OutlineButton icon='trash'
+                                       onPress={() => deleteHandler(place.id)}
+                                       color="#e36c6c"
+                        >
                             Delete Place
                         </OutlineButton>
 
@@ -128,7 +131,6 @@ const styles = StyleSheet.create({
         padding: 10,
         paddingBottom: 20,
         flex: 2,
-
     },
     title: {
         fontSize: 25,

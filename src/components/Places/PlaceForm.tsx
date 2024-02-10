@@ -19,11 +19,15 @@ export default function PlaceForm({submitPlace, previousPlace}: {
 
     const [location, setLocation] = useState(previousPlace.location)
 
+    const [disableButton, setDisableButton] = useState(false);
+
     const [id] = useState(previousPlace.id)
 
 
     async function submitData() {
         if (title !== "" || takenImage !== "" || (location.longitude && location.latitude)) {
+            setDisableButton(true);
+
             let address = ""
             if (location.longitude && location.latitude) {
                 address = await coordinatesToAddress(location)
@@ -34,6 +38,7 @@ export default function PlaceForm({submitPlace, previousPlace}: {
         } else {
             Alert.alert('Empty Data', 'Please complete at lease one from above.')
         }
+        setDisableButton(false);
     }
 
     return (
@@ -59,7 +64,11 @@ export default function PlaceForm({submitPlace, previousPlace}: {
                 </View>
 
                 <View style={styles.save}>
-                    <OutlineButton icon='save' onPress={submitData}>
+                    <OutlineButton icon='save'
+                                   onPress={submitData}
+                                   color="#80b66e"
+                                   disable={disableButton}
+                    >
                         Save to your place
                     </OutlineButton>
                 </View>

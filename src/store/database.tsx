@@ -21,7 +21,9 @@ function insert(data: Place) {
 
 
 // Fetch Places
-const fetchData: Promise<Place[]> = FetchPlaces(database)
+function fetchData(): Promise<Place[]> {
+    return FetchPlaces(database)
+}
 
 
 // Fetch Details

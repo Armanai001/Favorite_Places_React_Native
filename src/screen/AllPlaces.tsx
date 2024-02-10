@@ -13,11 +13,13 @@ export default function AllPlaces({route}: { route: any }) {
 
     useEffect(() => {
         async function loadPlaces() {
-            const places = await fetchData;
+            const places = await fetchData();
             setPlacesList(places)
         }
 
-        loadPlaces();
+        if (isFocused) {
+            loadPlaces();
+        }
 
     }, [isFocused])
 

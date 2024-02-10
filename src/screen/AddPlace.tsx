@@ -15,7 +15,7 @@ export default function AddPlace({navigation}: { navigation: any }) {
     }
 
     return <>
-        <View>
+        <View style={{flex:1}}>
             <PlaceForm submitPlace={submitPlace}/>
         </View>
     </>

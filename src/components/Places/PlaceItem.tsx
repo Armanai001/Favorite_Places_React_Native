@@ -1,10 +1,19 @@
 import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {Place} from "../../models/place";
-import {colors} from "../../constants/colors";
 
 export default function PlaceItem({place, onPress}: { place: Place, onPress: () => void }) {
+
+
+    function addressWrapper(address: string, wrapLength=80) {
+        if (address.length < wrapLength) {
+            return address
+        } else {
+            return address.slice(0, wrapLength) + "..."
+        }
+    }
+
     return <Pressable onPress={onPress}
-                      android_ripple={{color:"#9daee7"}}
+                      android_ripple={{color: "#9daee7"}}
                       style={({pressed}) => [styles.container, pressed && styles.pressed]}
     >
         <View style={styles.imageContainer}>
@@ -17,7 +26,7 @@ export default function PlaceItem({place, onPress}: { place: Place, onPress: () 
 
         <View style={styles.textContainer}>
             <Text style={styles.title}>{place.title || '----- Not added ------'}</Text>
-            <Text style={styles.address}>{place.address || '----- Not added -----'}</Text>
+            <Text numberOfLines={3} style={styles.address}>{addressWrapper(place.address) || '----- Not added -----'}</Text>
         </View>
     </Pressable>
 }

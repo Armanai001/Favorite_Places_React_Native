@@ -12,7 +12,7 @@ export default function EditPlace({navigation, route}: { navigation: any, route:
     }
 
 
-    return <View>
+    return <View style={{flex: 1}}>
         <PlaceForm submitPlace={submit} previousPlace={route.params}/>
     </View>
 

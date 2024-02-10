@@ -1,21 +1,30 @@
 import {Pressable, StyleSheet, Text} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import {colors} from "../../constants/colors";
-import {ReactNode} from "react";
+import {ReactNode, useState} from "react";
 
-export default function OutlineButton({icon, children, onPress}: {
+export default function OutlineButton({icon, children, onPress, color, disable}: {
     icon: any | string,
     children: ReactNode,
-    onPress: () => void
+    onPress: () => void,
+    color: string,
+    disable: boolean
 }) {
     return (
-        <Pressable android_ripple={{color: colors.primary500}} onPress={onPress} style={
-            ({pressed}) => [styles.container, pressed && styles.pressedButton]
+        <Pressable android_ripple={{color}} disabled={disable}  onPress={onPress} style={
+            ({pressed}) =>
+                [styles.container, pressed && styles.pressedButton, {borderColor: color}]
+
         }>
-            <Ionicons name={icon} size={18} color={colors.primary500}/>
-            <Text style={styles.title}>{children}</Text>
+            <Ionicons name={icon} size={18} color={color}/>
+            <Text style={{color}}>{children}</Text>
         </Pressable>
     )
+}
+
+OutlineButton.defaultProps = {
+    color: colors.primary500,
+    disable: false
 }
 
 const styles = StyleSheet.create({
@@ -29,14 +38,10 @@ const styles = StyleSheet.create({
         padding: 3,
         borderWidth: 2,
         borderStyle: 'solid',
-        borderColor: colors.primary500,
         flex: 1,
         height: 40
     },
     pressedButton: {
         opacity: 0.7,
-    },
-    title: {
-        color: colors.primary500
     }
 })
